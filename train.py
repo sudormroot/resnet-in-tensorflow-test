@@ -216,14 +216,17 @@ class Train(object):
                 # Print to stdout an analysis of the memory usage and the timing information
                 # broken down by python codes.
                 ProfileOptionBuilder = tf.profiler.ProfileOptionBuilder
-                #opts = ProfileOptionBuilder(ProfileOptionBuilder.time_and_memory()).with_node_names(show_name_regexes=['.*my_code.py.*']).build()
+                opts = ProfileOptionBuilder(ProfileOptionBuilder.time_and_memory()) #.with_node_names(show_name_regexes=['.*my_code.py.*']).build()
 
-                tf.profiler.profile(
-                    tf.get_default_graph(),
-                    run_meta=run_metadata#,
-                    #cmd='code',
-                    #options=opts
-                    )
+                #opts["min_bytes"]=0
+                #opts["select"]=()
+
+                #tf.profiler.profile(
+                #    tf.get_default_graph(),
+                #    run_meta=run_metadata,
+                #    cmd='code',
+                #    options=opts
+                #    )
 
                 # Print to stdout an analysis of the memory usage and the timing information
                 # broken down by operation types.
@@ -231,7 +234,7 @@ class Train(object):
                     tf.get_default_graph(),
                     run_meta=run_metadata,
                     cmd='op',
-                    options=tf.profiler.ProfileOptionBuilder.time_and_memory())
+                    options=opt) #options=tf.profiler.ProfileOptionBuilder.time_and_memory())
 
 
 

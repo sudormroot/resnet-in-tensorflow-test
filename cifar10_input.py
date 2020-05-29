@@ -85,7 +85,7 @@ def read_in_all_images(address_list, shuffle=True, is_random_label = False):
     label = np.array([])
 
     for address in address_list:
-        print 'Reading images from ' + address
+        print ('Reading images from ' + address)
         batch_data, batch_label = _read_one_batch(address, is_random_label)
         # Concatenate along axis 0 by default
         data = np.concatenate((data, batch_data))
@@ -100,7 +100,7 @@ def read_in_all_images(address_list, shuffle=True, is_random_label = False):
 
 
     if shuffle is True:
-        print 'Shuffling'
+        print ('Shuffling')
         order = np.random.permutation(num_data)
         data = data[order, ...]
         label = label[order]

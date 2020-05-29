@@ -27,6 +27,7 @@ print(gpu_device_name)
 
 # unified memory
 #from tensorflow.compat.v1 import ConfigProto
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=2, allow_growth = True)
 #config = ConfigProto()
 #config.gpu_options.per_process_gpu_memory_fraction = 2 
 #config.gpu_options.allow_growth = True

@@ -7,9 +7,19 @@ import pandas as pd
 
 from tensorflow.python.client import timeline
 
+import os
 
-unified_memory_set="no"
+UNIFIED_MEMORY_SET="no"
 
+env = os.environ
+
+if env["UNIFIED_MEMORY_SET"]:
+    UNIFIED_MEMORY_SET=env["UNIFIED_MEMORY_SET"]
+
+if UNIFIED_MEMORY_SET == "yes":
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=2, allow_growth = True)
+else:
+    gpu_options = tf.GPUOptions()
 
 try:
     # Python 2
@@ -183,7 +193,7 @@ class Train(object):
                                   ,run_metadata=run_metadata)
  
 
-                profile_result="timeline.gpu.step-%d.umem-%s.batchsize-%d.json"%(step, unified_memory_set, FLAGS.train_batch_size)
+                profile_result="timeline.gpu.step-%d.umem-%s.batchsize-%d.json"%(step, UNIFIED_MEMORY_SET, FLAGS.train_batch_size)
 
                 print("profile_result=",profile_result)
 

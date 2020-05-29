@@ -21,13 +21,13 @@ gpu_device_name = tf.test.gpu_device_name()
 print(gpu_device_name)
 
 
-local_device_protos = device_lib.list_local_devices()
-print(local_device_protos)
+#local_device_protos = device_lib.list_local_devices()
+#print(local_device_protos)
 
 
 # unified memory
-from tensorflow.compat.v1 import ConfigProto
-config = ConfigProto()
+#from tensorflow.compat.v1 import ConfigProto
+#config = ConfigProto()
 #config.gpu_options.per_process_gpu_memory_fraction = 2 
 #config.gpu_options.allow_growth = True
 
@@ -181,8 +181,8 @@ class Train(object):
             start_time = time.time()
 
             # trace timeline
-            run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
-            run_metadata = tf.RunMetadata()
+            #run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+            #run_metadata = tf.RunMetadata()
 
             _, _, train_loss_value, train_error_value = sess.run([self.train_op, self.train_ema_op,
                                                            self.full_loss, self.train_top1_error],
@@ -197,10 +197,10 @@ class Train(object):
 
             
             # Create the Timeline object, and write it to a json
-            tl = timeline.Timeline(run_metadata.step_stats)
-            ctf = tl.generate_chrome_trace_format()
-            with open('resnet32-timeline.json', 'w') as tlf:
-                tlf.write(ctf)
+            #tl = timeline.Timeline(run_metadata.step_stats)
+            #ctf = tl.generate_chrome_trace_format()
+            #with open('resnet32-timeline.json', 'w') as tlf:
+            #    tlf.write(ctf)
 
 
             duration = time.time() - start_time

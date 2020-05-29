@@ -12,6 +12,11 @@ import pandas as pd
 from tensorflow.python.client import timeline
 from tensorflow.python.client import device_lib
 
+from tensorflow.python.profiler import model_analyzer
+from tensorflow.python.profiler import option_builder
+
+
+
 gpu_device_name = tf.test.gpu_device_name()
 print(gpu_device_name)
 
@@ -23,8 +28,8 @@ print(local_device_protos)
 # unified memory
 from tensorflow.compat.v1 import ConfigProto
 config = ConfigProto()
-config.gpu_options.per_process_gpu_memory_fraction = 2 
-config.gpu_options.allow_growth = True
+#config.gpu_options.per_process_gpu_memory_fraction = 2 
+#config.gpu_options.allow_growth = True
 
 
 
@@ -187,8 +192,8 @@ class Train(object):
                                   self.vali_label_placeholder: validation_batch_labels,
                                   self.lr_placeholder: FLAGS.init_lr}, 
                                   options=run_options, 
-                                  run_metadata=run_metadata,
-                                  config=config)
+                                  run_metadata=run_metadata)
+                                  #config=config)
 
             
             # Create the Timeline object, and write it to a json

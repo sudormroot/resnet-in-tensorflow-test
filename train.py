@@ -113,7 +113,7 @@ class Train(object):
         saver = tf.train.Saver(tf.global_variables())
         summary_op = tf.summary.merge_all()
         init = tf.initialize_all_variables()
-        sess = tf.Session()
+        sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 
 
         # If you want to load from a checkpoint
@@ -189,7 +189,6 @@ class Train(object):
                                   self.vali_image_placeholder: validation_batch_data,
                                   self.vali_label_placeholder: validation_batch_labels,
                                   self.lr_placeholder: FLAGS.init_lr}#)
-                                  ,config=tf.ConfigProto(gpu_options=gpu_options)
                                   ,options=run_options
                                   ,run_metadata=run_metadata)
  
@@ -210,8 +209,7 @@ class Train(object):
                                   self.label_placeholder: train_batch_labels,
                                   self.vali_image_placeholder: validation_batch_data,
                                   self.vali_label_placeholder: validation_batch_labels,
-                                  self.lr_placeholder: FLAGS.init_lr}
-                                  ,config=tf.ConfigProto(gpu_options=gpu_options))
+                                  self.lr_placeholder: FLAGS.init_lr})
  
 
 

@@ -8,6 +8,9 @@ import pandas as pd
 from tensorflow.python.client import timeline
 
 
+unified_memory_set="no"
+
+
 try:
     # Python 2
     xrange
@@ -162,12 +165,14 @@ class Train(object):
 
             start_time = time.time()
 
-            # trace timeline
-            run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
-            run_metadata = tf.RunMetadata()
+
+            if step == 10:
+                # trace timeline
+                run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+                run_metadata = tf.RunMetadata()
 
 
-            _, _, train_loss_value, train_error_value = sess.run([self.train_op, self.train_ema_op,
+                _, _, train_loss_value, train_error_value = sess.run([self.train_op, self.train_ema_op,
                                                            self.full_loss, self.train_top1_error],
                                 {self.image_placeholder: train_batch_data,
                                   self.label_placeholder: train_batch_labels,
@@ -177,14 +182,30 @@ class Train(object):
                                   ,options=run_options
                                   ,run_metadata=run_metadata)
  
-            # Create the Timeline object, and write it to a json
-            tl = timeline.Timeline(run_metadata.step_stats)
-            ctf = tl.generate_chrome_trace_format()
-            with open('resnet32-timeline.json', 'w') as tlf:
-                tlf.write(ctf)
+
+                profile_result="timeline.gpu.step-%d.umem-%s.batchsize-%d.json"%(step, unified_memory_set, FLAGS.train_batch_size)
+
+                print("profile_result=",profile_result)
+
+                # Create the Timeline object, and write it to a json
+                tl = timeline.Timeline(run_metadata.step_stats)
+                ctf = tl.generate_chrome_trace_format()
+                with open(profile_result, 'w') as tlf:
+                    tlf.write(ctf)
+            else:
+                _, _, train_loss_value, train_error_value = sess.run([self.train_op, self.train_ema_op,
+                                                           self.full_loss, self.train_top1_error],
+                                {self.image_placeholder: train_batch_data,
+                                  self.label_placeholder: train_batch_labels,
+                                  self.vali_image_placeholder: validation_batch_data,
+                                  self.vali_label_placeholder: validation_batch_labels,
+                                  self.lr_placeholder: FLAGS.init_lr})
+ 
 
 
             duration = time.time() - start_time
+
+            print("step=%d,duration=%d"%(step, duration))
 
 
             if step % FLAGS.report_freq == 0:

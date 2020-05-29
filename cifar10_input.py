@@ -7,7 +7,6 @@ import sys
 import numpy as np
 #import cPickle
 import pickle as cPickle
-
 import os
 import cv2
 
@@ -62,7 +61,8 @@ def _read_one_batch(path, is_random_label):
     :return: image numpy arrays and label numpy arrays
     '''
     fo = open(path, 'rb')
-    dicts = cPickle.load(fo)
+    #dicts = cPickle.load(fo)
+    dicts = cPickle.load(fo, encoding='latin1')
     fo.close()
 
     data = dicts['data']

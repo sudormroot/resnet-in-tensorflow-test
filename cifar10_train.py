@@ -135,7 +135,7 @@ class Train(object):
         print ('Start training...')
         print ('----------------------------')
 
-        for step in xrange(FLAGS.train_steps):
+        for step in range(FLAGS.train_steps):
 
             train_batch_data, train_batch_labels = self.generate_augment_train_batch(all_data, all_labels,
                                                                         FLAGS.train_batch_size)

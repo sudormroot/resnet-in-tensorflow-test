@@ -189,7 +189,7 @@ class Train(object):
                                   self.vali_image_placeholder: validation_batch_data,
                                   self.vali_label_placeholder: validation_batch_labels,
                                   self.lr_placeholder: FLAGS.init_lr}#)
-                                  ,gpu_options=gpu_options
+                                  ,config=tf.ConfigProto(gpu_options=gpu_options)
                                   ,options=run_options
                                   ,run_metadata=run_metadata)
  
@@ -211,7 +211,7 @@ class Train(object):
                                   self.vali_image_placeholder: validation_batch_data,
                                   self.vali_label_placeholder: validation_batch_labels,
                                   self.lr_placeholder: FLAGS.init_lr}
-                                  ,gpu_options=gpu_options)
+                                  ,config=tf.ConfigProto(gpu_options=gpu_options))
  
 
 

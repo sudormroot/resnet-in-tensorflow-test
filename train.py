@@ -205,7 +205,7 @@ class Train(object):
 
             duration = time.time() - start_time
 
-            print("step=%d,duration=%d"%(step, duration))
+            print("step=%d,duration=%f"%(step, duration))
 
 
             if step % FLAGS.report_freq == 0:

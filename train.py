@@ -5,6 +5,9 @@ from cifar10_input import *
 import pandas as pd
 
 
+#
+# 
+#
 from tensorflow.python.client import timeline
 
 import os
@@ -21,6 +24,11 @@ if UNIFIED_MEMORY_SET == "yes":
 else:
     gpu_options = tf.GPUOptions()
 
+
+
+
+
+# fix by Jie
 try:
     # Python 2
     xrange
@@ -202,6 +210,32 @@ class Train(object):
                 ctf = tl.generate_chrome_trace_format()
                 with open(profile_result, 'w') as tlf:
                     tlf.write(ctf)
+
+
+
+                # Print to stdout an analysis of the memory usage and the timing information
+                # broken down by python codes.
+                ProfileOptionBuilder = tf.profiler.ProfileOptionBuilder
+                #opts = ProfileOptionBuilder(ProfileOptionBuilder.time_and_memory()).with_node_names(show_name_regexes=['.*my_code.py.*']).build()
+
+                tf.profiler.profile(
+                    tf.get_default_graph(),
+                    run_meta=run_metadata#,
+                    #cmd='code',
+                    #options=opts
+                    )
+
+                # Print to stdout an analysis of the memory usage and the timing information
+                # broken down by operation types.
+                tf.profiler.profile(
+                    tf.get_default_graph(),
+                    run_meta=run_metadata,
+                    cmd='op',
+                    options=tf.profiler.ProfileOptionBuilder.time_and_memory())
+
+
+
+
             else:
                 _, _, train_loss_value, train_error_value = sess.run([self.train_op, self.train_ema_op,
                                                            self.full_loss, self.train_top1_error],

@@ -3,6 +3,11 @@ from datetime import datetime
 import time
 from cifar10_input import *
 import pandas as pd
+
+
+from tensorflow.python.client import timeline
+
+
 try:
     # Python 2
     xrange
@@ -157,13 +162,28 @@ class Train(object):
 
             start_time = time.time()
 
+            # trace timeline
+            run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+            run_metadata = tf.RunMetadata()
+
+
             _, _, train_loss_value, train_error_value = sess.run([self.train_op, self.train_ema_op,
                                                            self.full_loss, self.train_top1_error],
                                 {self.image_placeholder: train_batch_data,
                                   self.label_placeholder: train_batch_labels,
                                   self.vali_image_placeholder: validation_batch_data,
                                   self.vali_label_placeholder: validation_batch_labels,
-                                  self.lr_placeholder: FLAGS.init_lr})
+                                  self.lr_placeholder: FLAGS.init_lr}#)
+                                  ,options=run_options
+                                  ,run_metadata=run_metadata)
+ 
+            # Create the Timeline object, and write it to a json
+            tl = timeline.Timeline(run_metadata.step_stats)
+            ctf = tl.generate_chrome_trace_format()
+            with open('resnet32-timeline.json', 'w') as tlf:
+                tlf.write(ctf)
+
+
             duration = time.time() - start_time
 
 

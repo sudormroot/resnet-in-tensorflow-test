@@ -190,9 +190,9 @@ class Train(object):
                                   self.label_placeholder: train_batch_labels,
                                   self.vali_image_placeholder: validation_batch_data,
                                   self.vali_label_placeholder: validation_batch_labels,
-                                  self.lr_placeholder: FLAGS.init_lr}, 
-                                  options=run_options, 
-                                  run_metadata=run_metadata)
+                                  self.lr_placeholder: FLAGS.init_lr})
+                                  #, options=run_options, 
+                                  #run_metadata=run_metadata)
                                   #config=config)
 
             

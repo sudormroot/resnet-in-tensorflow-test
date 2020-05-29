@@ -234,7 +234,7 @@ class Train(object):
                     tf.get_default_graph(),
                     run_meta=run_metadata,
                     cmd='op',
-                    options=opt) #options=tf.profiler.ProfileOptionBuilder.time_and_memory())
+                    options=opts) #options=tf.profiler.ProfileOptionBuilder.time_and_memory())
 
 
 

@@ -189,6 +189,7 @@ class Train(object):
                                   self.vali_image_placeholder: validation_batch_data,
                                   self.vali_label_placeholder: validation_batch_labels,
                                   self.lr_placeholder: FLAGS.init_lr}#)
+                                  ,gpu_options=gpu_options
                                   ,options=run_options
                                   ,run_metadata=run_metadata)
  
@@ -209,13 +210,14 @@ class Train(object):
                                   self.label_placeholder: train_batch_labels,
                                   self.vali_image_placeholder: validation_batch_data,
                                   self.vali_label_placeholder: validation_batch_labels,
-                                  self.lr_placeholder: FLAGS.init_lr})
+                                  self.lr_placeholder: FLAGS.init_lr}
+                                  ,gpu_options=gpu_options)
  
 
 
             duration = time.time() - start_time
 
-            print("step=%d,duration=%f"%(step, duration))
+            print("UNIFIED_MEMORY_SET=%s,batchsize=%d,step=%d,duration=%f"%(UNIFIED_MEMORY_SET, FLAGS.train_batch_size, step, duration))
 
 
             if step % FLAGS.report_freq == 0:

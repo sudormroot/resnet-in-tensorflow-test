@@ -5,7 +5,9 @@ import tarfile
 from six.moves import urllib
 import sys
 import numpy as np
-import cPickle
+#import cPickle
+import pickle as cPickle
+
 import os
 import cv2
 
